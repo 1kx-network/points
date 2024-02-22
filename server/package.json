@@ -5,8 +5,7 @@
   "scripts": {
     "start": "netlify dev"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "netlify-cli": "^17.17.0"
   },

@@ -6,9 +6,9 @@ const handler = async (event) => {
     const url = `https://app.eigenlayer.xyz/api/trpc/tokenStaking.getRestakingPoints,nativeStaking.getNativeStakingSummaryByEigenpod?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22staker%22%3A%22${address}%22%7D%7D%2C%221%22%3A%7B%22json%22%3A%7B%22podOwnerAddress%22%3A%22${address}%22%7D%7D%7D`
     const response = await fetch(url);
 
-    console.log({ response })
     const data = await response.json();
-    const points = data[0].result.data.json.reduce((total, obj) => total + parseInt(obj.integratedShares), 0)
+    console.dir({ data }, { depth: null })
+    const points = data[0].result.data.json.reduce((total, obj) => total + BigInt(obj.integratedShares), BigInt(0)).toString()
 
     const image = generateImage(address, points)
 
