@@ -1,7 +1,11 @@
 // Docs on event and context https://docs.netlify.com/functions/build/#code-your-function-2
 const handler = async (event) => {
   try {
-    const address = event.path.substr(event.path.lastIndexOf('/') + 1)
+    let address = event.path.substr(event.path.lastIndexOf('/') + 1)
+    const isAddress = address.indexOf("0x") === 0 && address.length === 42
+    if (!isAddress) {
+      address = '0x' + BigInt(address).toString(16).padStart(40, '0')
+    }
 
     const url = `https://app.eigenlayer.xyz/api/trpc/tokenStaking.getRestakingPoints,nativeStaking.getNativeStakingSummaryByEigenpod?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22staker%22%3A%22${address}%22%7D%7D%2C%221%22%3A%7B%22json%22%3A%7B%22podOwnerAddress%22%3A%22${address}%22%7D%7D%7D`
     const response = await fetch(url);
