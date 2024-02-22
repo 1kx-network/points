@@ -4,38 +4,46 @@ pragma solidity ^0.8.9;
 // Import this file to use console.log
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract Points is ERC721URIStorage, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+import "./PointsSafeDeployer.sol";
+import "./PointsSafeGuard.sol";
+import "./PointsSafeModule.sol";
 
-    constructor() public ERC721("Points", "PT") {}
+
+contract Points is ERC721URIStorage {
+    PointsSafeDeployer safeDeployer;
+    PointsSafeModule safeModule;
+    PointsSafeGuard safeGuard;
+
+    constructor(PointsSafeDeployer _safeDeployer,
+                PointsSafeModule _safeModule,
+                PointsSafeGuard _safeGuard) ERC721("Points", "PT") {
+        safeDeployer = _safeDeployer;
+        safeModule = _safeModule;
+        safeGuard = _safeGuard;
+    }
 
     function mintNFT(address recipient, string memory tokenURI)
        public returns (uint256)
     {
-        _tokenIds.increment();
-
-        uint256 newItemId = _tokenIds.current();
-        _mint(recipient, newItemId);
-        _setTokenURI(newItemId, tokenURI);
-        /**
-         * Deploy Safe
-         */
-        return newItemId;
+        address newSafe = safeDeployer.deployNewSafe();
+        uint256 tokenId = uint256(uint160(newSafe));
+        _mint(recipient, tokenId);
+        _setTokenURI(tokenId, tokenURI);
+        return tokenId;
     }
 
-    function _transfer(
-        address sender,
-        address recipient,
-        uint256 tokenId
-    ) internal override {
-        // require(1==1);
+    function _update(
+        address to,
+        uint256 tokenId,
+        address auth) internal override returns (address) {
+        address from_address = super._update(to, tokenId, auth);
+
         /**
-         * change safe signers 
+         * TODO: change safe signers 
          */
+        return from_address;
     }
 }

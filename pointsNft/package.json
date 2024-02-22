@@ -1,42 +1,11 @@
 {
-  "name": "LPToken",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GoblinSax/LPToken.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GoblinSax/LPToken/issues"
-  },
-  "homepage": "https://github.com/GoblinSax/LPToken#readme",
-  "dependencies": {
-    "@alch/alchemy-web3": "^1.4.6",
-    "@openzeppelin/contracts": "^4.7.3",
-    "dotenv": "^16.0.1",
-    "hardhat": "^2.10.2"
-  },
+  "name": "hardhat-project",
   "devDependencies": {
-    "@ethersproject/abi": "^5.7.0",
-    "@ethersproject/providers": "^5.7.0",
-    "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.4",
-    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
-    "@nomiclabs/hardhat-ethers": "^2.1.1",
-    "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@typechain/ethers-v5": "^10.1.0",
-    "@typechain/hardhat": "^6.1.2",
-    "chai": "^4.3.6",
-    "ethers": "^5.7.0",
-    "hardhat-gas-reporter": "^1.0.8",
-    "solidity-coverage": "^0.7.21",
-    "typechain": "^8.1.0"
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.14.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.20.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1"
   }
 }

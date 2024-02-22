@@ -17,7 +17,6 @@ npx hardhat run scripts/deploy.js
 ```
 ### deploy to chain and verify 
 ```shell
-npx hardhat run scripts/deploy.js --network {mainnet/goerli}
-npx hardhat verify --network {mainnet/goerli} {deployment address}
+npx hardhat ignition deploy ignition/modules/points.ts
 ```
 
