@@ -1,0 +1,12 @@
+
+
+[functions]
+# Directory with serverless functions, including background
+# functions, to deploy. This is an absolute path relative to the 
+# base directory, which is the root by default (/).
+directory = "functions/"
+
+[[redirects]]
+from = "/metadata/*"
+to = "/.netlify/functions/api/:splat"
+status = 200
