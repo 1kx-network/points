@@ -10,4 +10,3 @@ contract PointsSafeDeployer {
         return address(0);
     }
 }
-

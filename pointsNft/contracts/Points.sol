@@ -6,6 +6,7 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
 
 import "./PointsSafeDeployer.sol";
 import "./PointsSafeGuard.sol";
@@ -41,9 +42,8 @@ contract Points is ERC721URIStorage {
         address auth) internal override returns (address) {
         address from_address = super._update(to, tokenId, auth);
 
-        /**
-         * TODO: change safe signers 
-         */
+        GnosisSafe safeContract = GnosisSafe(payable(address(uint160(tokenId))));
+        safeModule.resetSafeOwnership(safeContract, to);
         return from_address;
     }
 }
