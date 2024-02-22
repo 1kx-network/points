@@ -33,5 +33,9 @@ contract PointsSafeModule {
         }
         // Swap the latest remaining owner with the new owner.
         safe.swapOwner(prevOwner, owners[owners.length - 1], newOwner);
+        assert(safe.getOwners().length == 1);
+        if (safe.getThreshold() != 1) {
+            safe.changeThreshold(1);
+        }
     }
 }
