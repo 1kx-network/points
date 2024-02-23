@@ -3,22 +3,23 @@ pragma solidity ^0.8.9;
 
 // Import this file to use console.log
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./PointsSafeDeployer.sol";
 import "./PointsSafeGuard.sol";
 import "./PointsSafeModule.sol";
 
 
-contract Points is ERC721URIStorage {
+contract Points is ERC721Enumerable, Ownable {
     PointsSafeDeployer immutable safeDeployer;
     PointsSafeModule immutable safeModule;
     PointsSafeGuard immutable safeGuard;
 
-    string constant baseURI = "https://on-chain-points.netlify.app/metadata/";
+    string baseURI = "https://on-chain-points.netlify.app/metadata/";
 
     constructor(PointsSafeDeployer _safeDeployer,
                 PointsSafeModule _safeModule,
@@ -38,9 +39,15 @@ contract Points is ERC721URIStorage {
         uint256 tokenId = uint256(uint160(newSafe));
         _mint(recipient, tokenId);
 
-        string memory tokenURI = string(abi.encodePacked(baseURI, Strings.toString(uint160(newSafe))));
-        _setTokenURI(tokenId, tokenURI);
         return tokenId;
+    }
+
+    function tokenURI(uint256 id) public view override(ERC721) returns (string memory) {
+        return string(abi.encodePacked(baseURI, Strings.toString(id)));
+    }
+
+    function updateBaseURI(string memory _baseURI) public onlyOwner {
+        baseURI = _baseURI;
     }
 
     function _update(
