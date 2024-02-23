@@ -11,11 +11,12 @@ npm i
 npx hardhat test 
 ```
 
-### deploy  
-```shell
-npx hardhat run scripts/deploy.js
+``` set the deployer private key
+npx hardhat vars set DEPLOYER_PRIVATE_KEY <your private key in hex w/o 0x>
 ```
-### deploy to chain and verify 
+
+```
+### deploy
 ```shell
 npx hardhat ignition deploy ignition/modules/points.ts
 ```

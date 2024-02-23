@@ -3,32 +3,32 @@ pragma solidity ^0.8.9;
 
 // Import this file to use console.log
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
 import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxyFactory.sol";
 import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxy.sol";
-
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./PointsSafeDeployer.sol";
 import "./PointsSafeGuard.sol";
 import "./PointsSafeModule.sol";
 
+contract Points is ERC721Enumerable, Ownable {
+    GnosisSafe immutable safeSingleton;
+    GnosisSafeProxyFactory immutable safeFactory;
+    PointsSafeDeployer immutable safeDeployer;
+    PointsSafeModule immutable safeModule;
+    PointsSafeGuard immutable safeGuard;
 
-contract Points is ERC721URIStorage {
-    GnosisSafe safeSingleton;
-    GnosisSafeProxyFactory safeFactory;
-    PointsSafeDeployer safeDeployer;
-    PointsSafeModule safeModule;
-    PointsSafeGuard safeGuard;
-
+    string baseURI = "https://on-chain-points.netlify.app/metadata/";
 
     constructor(GnosisSafe _safeSingleton,
                 GnosisSafeProxyFactory _safeFactory,
                 PointsSafeDeployer _safeDeployer,
                 PointsSafeModule _safeModule,
-                PointsSafeGuard _safeGuard) ERC721("Points", "PT") {
+                PointsSafeGuard _safeGuard) ERC721("Points", "PT") Ownable(msg.sender) {
         safeFactory = _safeFactory;
         safeSingleton = _safeSingleton;
         safeDeployer = _safeDeployer;
@@ -36,8 +36,8 @@ contract Points is ERC721URIStorage {
         safeGuard = _safeGuard;
     }
 
-    function mintNFT(address recipient, string memory tokenURI)
-       public returns (uint256)
+    function mintNFT(address recipient)
+       external returns (uint256)
     {
         bytes memory setModule = abi.encodeWithSignature(
             "setupEverything(address)", 
@@ -57,9 +57,20 @@ contract Points is ERC721URIStorage {
         GnosisSafeProxy newSafe = safeFactory.createProxyWithNonce(address(safeSingleton), initializer, 0);
         // newSafe.setGuard(safeGuard);
         uint256 tokenId = uint256(uint160(address(newSafe)));
+        if (recipient == address(0)) {
+            recipient = msg.sender;
+        }
         _mint(recipient, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+
         return tokenId;
+    }
+
+    function tokenURI(uint256 id) public view override(ERC721) returns (string memory) {
+        return string(abi.encodePacked(baseURI, Strings.toString(id)));
+    }
+
+    function updateBaseURI(string memory _baseURI) public onlyOwner {
+        baseURI = _baseURI;
     }
 
     function _update(
