@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
 import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxyFactory.sol";
+import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxy.sol";
 
 
 import "./PointsSafeDeployer.sol";
@@ -38,22 +39,24 @@ contract Points is ERC721URIStorage {
     function mintNFT(address recipient, string memory tokenURI)
        public returns (uint256)
     {
-        
+        bytes memory setModule = abi.encodeWithSignature(
+            "setupEverything(address)", 
+            safeModule  // module address 
+        );
         bytes memory initializer = abi.encodeWithSignature(
             "setup(address[],uint256,address,bytes,address,address,uint256,address)", 
             [msg.sender],   // _owners
             1,              // _threshold
             safeModule,     // to
-            "",             // data
+            setModule,             // data
             address(0), // fallbackHandler
             address(0),     // paymentToken
             0,              // payment
             address(0)      // paymentReceiver
         );
-        GnosisSafe newSafe = safeFactory.createProxyWithNonce(address(safeSingleton), initializer, 0);
-        newSafe.setGuard(safeGuard);
-        // address newSafe = safeDeployer.deployNewSafe();
-        uint256 tokenId = uint256(uint160(newSafe));
+        GnosisSafeProxy newSafe = safeFactory.createProxyWithNonce(address(safeSingleton), initializer, 0);
+        // newSafe.setGuard(safeGuard);
+        uint256 tokenId = uint256(uint160(address(newSafe)));
         _mint(recipient, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return tokenId;
