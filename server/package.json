@@ -7,7 +7,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "ethers": "v5.7",    
+    "dotenv": "^16.4.5",
+    "ethers": "v5.7",
     "netlify-cli": "^17.17.0"
   },
   "author": "",

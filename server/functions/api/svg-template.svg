@@ -5,7 +5,7 @@
     Address: %address%
   </text>
   <text x="10" y="405" font-family="Courier" font-weight="bold" font-size="20" fill="#180D68">
-    <animate attributeType="XML" attributeName="x" from="420" to="-220" dur="5s" repeatCount="indefinite" />
+    <animate attributeType="XML" attributeName="x" from="420" to="-420" dur="5s" repeatCount="indefinite" />
     Points: %points%
   </text>
   <path
