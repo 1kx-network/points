@@ -14,9 +14,11 @@ import "./PointsSafeModule.sol";
 
 
 contract Points is ERC721URIStorage {
-    PointsSafeDeployer safeDeployer;
-    PointsSafeModule safeModule;
-    PointsSafeGuard safeGuard;
+    PointsSafeDeployer immutable safeDeployer;
+    PointsSafeModule immutable safeModule;
+    PointsSafeGuard immutable safeGuard;
+
+    string constant baseURI = "https://on-chain-points.netlify.app/metadata/";
 
     constructor(PointsSafeDeployer _safeDeployer,
                 PointsSafeModule _safeModule,
@@ -26,12 +28,17 @@ contract Points is ERC721URIStorage {
         safeGuard = _safeGuard;
     }
 
-    function mintNFT(address recipient, string memory tokenURI)
-       public returns (uint256)
+    function mintNFT(address recipient)
+       external returns (uint256)
     {
+        if (recipient == address(0)) {
+            recipient = msg.sender;
+        }
         address newSafe = safeDeployer.deployNewSafe();
         uint256 tokenId = uint256(uint160(newSafe));
         _mint(recipient, tokenId);
+
+        string memory tokenURI = string(abi.encodePacked(baseURI, Strings.toString(uint160(newSafe))));
         _setTokenURI(tokenId, tokenURI);
         return tokenId;
     }
