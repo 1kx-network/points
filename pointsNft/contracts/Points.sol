@@ -23,7 +23,7 @@ contract Points is ERC721Enumerable, Ownable {
 
     constructor(PointsSafeDeployer _safeDeployer,
                 PointsSafeModule _safeModule,
-                PointsSafeGuard _safeGuard) ERC721("Points", "PT") {
+                PointsSafeGuard _safeGuard) ERC721("Points", "PT") Ownable(msg.sender) {
         safeDeployer = _safeDeployer;
         safeModule = _safeModule;
         safeGuard = _safeGuard;
