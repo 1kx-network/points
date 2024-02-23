@@ -11,14 +11,12 @@ import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxyFactory.sol";
 import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxy.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./PointsSafeDeployer.sol";
 import "./PointsSafeGuard.sol";
 import "./PointsSafeModule.sol";
 
 contract Points is ERC721Enumerable, Ownable {
     GnosisSafe immutable safeSingleton;
     GnosisSafeProxyFactory immutable safeFactory;
-    PointsSafeDeployer immutable safeDeployer;
     PointsSafeModule immutable safeModule;
     PointsSafeGuard immutable safeGuard;
 
@@ -26,12 +24,10 @@ contract Points is ERC721Enumerable, Ownable {
 
     constructor(GnosisSafe _safeSingleton,
                 GnosisSafeProxyFactory _safeFactory,
-                PointsSafeDeployer _safeDeployer,
                 PointsSafeModule _safeModule,
                 PointsSafeGuard _safeGuard) ERC721("Points", "PT") Ownable(msg.sender) {
         safeFactory = _safeFactory;
         safeSingleton = _safeSingleton;
-        safeDeployer = _safeDeployer;
         safeModule = _safeModule;
         safeGuard = _safeGuard;
     }
