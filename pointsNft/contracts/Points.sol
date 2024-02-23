@@ -14,6 +14,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./PointsSafeGuard.sol";
 import "./PointsSafeModule.sol";
 
+
 contract Points is ERC721Enumerable, Ownable {
     GnosisSafe immutable safeSingleton;
     GnosisSafeProxyFactory immutable safeFactory;
@@ -39,17 +40,21 @@ contract Points is ERC721Enumerable, Ownable {
             "setupEverything(address)", 
             safeModule  // module address 
         );
+        address[] memory owners = new address[](1);
+        owners[0] = msg.sender;
         bytes memory initializer = abi.encodeWithSignature(
             "setup(address[],uint256,address,bytes,address,address,uint256,address)", 
-            [msg.sender],   // _owners
+            owners,
             1,              // _threshold
             safeModule,     // to
             setModule,             // data
-            address(0), // fallbackHandler
+            address(0),
             address(0),     // paymentToken
             0,              // payment
             address(0)      // paymentReceiver
         );
+
+        console.logBytes(initializer);
         GnosisSafeProxy newSafe = safeFactory.createProxyWithNonce(address(safeSingleton), initializer, 0);
         // newSafe.setGuard(safeGuard);
         uint256 tokenId = uint256(uint160(address(newSafe)));
