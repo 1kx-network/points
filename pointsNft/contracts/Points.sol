@@ -37,8 +37,9 @@ contract Points is ERC721Enumerable, Ownable {
        external returns (uint256)
     {
         bytes memory setModule = abi.encodeWithSignature(
-            "setupEverything(address)", 
-            safeModule  // module address 
+            "setupModuleAndGuard(address,address)", 
+            safeModule,
+            safeGuard
         );
         address[] memory owners = new address[](1);
         owners[0] = msg.sender;
@@ -47,7 +48,7 @@ contract Points is ERC721Enumerable, Ownable {
             owners,
             1,              // _threshold
             safeModule,     // to
-            setModule,             // data
+            setModule,      // data
             address(0),
             address(0),     // paymentToken
             0,              // payment
