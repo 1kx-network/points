@@ -57,7 +57,6 @@ contract Points is ERC721Enumerable, Ownable {
 
         console.logBytes(initializer);
         GnosisSafeProxy newSafe = safeFactory.createProxyWithNonce(address(safeSingleton), initializer, 0);
-        // newSafe.setGuard(safeGuard);
         uint256 tokenId = uint256(uint160(address(newSafe)));
         if (recipient == address(0)) {
             recipient = msg.sender;

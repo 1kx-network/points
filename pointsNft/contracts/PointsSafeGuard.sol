@@ -57,7 +57,7 @@ contract PointsSafeGuard is BaseGuard {
     function checkAfterExecution(bytes32, bool) external view override {
         GnosisSafe safe = GnosisSafe(payable(msg.sender));
         bytes memory guard_slot = safe.getStorageAt(GUARD_STORAGE_SLOT, 1);
-        address guard = address(uint160(bytes20(guard_slot)));
+        address guard = address(uint160(uint256(bytes32(guard_slot))));
         require(guard == address(this), "Attemping to remove the Points Guard");
         require(safe.isModuleEnabled(moduleAddress), "Attempting to remove the Points Module");
    }
