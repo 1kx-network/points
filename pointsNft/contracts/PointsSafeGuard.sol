@@ -32,7 +32,7 @@ contract PointsSafeGuard is BaseGuard {
 
     // Copied from GuardManager.sol, verified for all versions of Safe.
     // keccak256("guard_manager.guard.address")
-    bytes32 internal constant GUARD_STORAGE_SLOT = 0x4a204f620c8c5ccdca3fd54d003badd85ba500436a431f0cbda4f558c93c34c8;
+    uint256 internal constant GUARD_STORAGE_SLOT = 0x4a204f620c8c5ccdca3fd54d003badd85ba500436a431f0cbda4f558c93c34c8;
 
     constructor(address moduleAddress_) {
         moduleAddress = moduleAddress_;
@@ -56,11 +56,8 @@ contract PointsSafeGuard is BaseGuard {
 
     function checkAfterExecution(bytes32, bool) external view override {
         GnosisSafe safe = GnosisSafe(payable(msg.sender));
-        address guard;
-        bytes32 slot = GUARD_STORAGE_SLOT;
-        assembly {
-           guard := sload(slot)
-        }
+        bytes memory guard_slot = safe.getStorageAt(GUARD_STORAGE_SLOT, 1);
+        address guard = address(uint160(bytes20(guard_slot)));
         require(guard == address(this), "Attemping to remove the Points Guard");
         require(safe.isModuleEnabled(moduleAddress), "Attempting to remove the Points Module");
    }
