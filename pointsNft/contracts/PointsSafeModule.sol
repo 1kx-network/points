@@ -8,9 +8,10 @@ import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
 contract PointsSafeModule {
     address internal constant SENTINEL_OWNERS = address(0x1);
 
-    function setupEverything(address module) external {
-        address payable thisAddr = payable(address(this));
-        GnosisSafe(thisAddr).enableModule(module);
+    function setupModuleAndGuard(address module, address guard) external {
+        GnosisSafe safe = GnosisSafe(payable(address(this)));
+        safe.enableModule(module);
+        safe.setGuard(guard);
     }
 
     function resetSafeOwnership(GnosisSafe safeContract, address owner) public {

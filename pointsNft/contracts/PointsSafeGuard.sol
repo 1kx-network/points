@@ -15,6 +15,7 @@ import "@gnosis.pm/safe-contracts/contracts/interfaces/ISignatureValidator.sol";
  *         At time of writing this contract, it is implemented in their repo, but not released with v1.3.0
  */
 abstract contract BaseGuard is Guard {
+    
     function supportsInterface(bytes4 interfaceId) external view virtual returns (bool) {
         return
             interfaceId == type(Guard).interfaceId || // 0xe6d7a83a
@@ -22,11 +23,16 @@ abstract contract BaseGuard is Guard {
     }
 }
 
-
-
-contract PointsSafeGuard is BaseGuard, ISignatureValidatorConstants, SignatureDecoder {
+/**
+ * @title PoinstSafeGuard - makes sure that any transaction cannot remove the guard itself and cannot remove our module.
+ */
+contract PointsSafeGuard is BaseGuard {
 
     address private immutable moduleAddress;
+
+    // Copied from GuardManager.sol, verified for all versions of Safe.
+    // keccak256("guard_manager.guard.address")
+    uint256 internal constant GUARD_STORAGE_SLOT = 0x4a204f620c8c5ccdca3fd54d003badd85ba500436a431f0cbda4f558c93c34c8;
 
     constructor(address moduleAddress_) {
         moduleAddress = moduleAddress_;
@@ -45,33 +51,14 @@ contract PointsSafeGuard is BaseGuard, ISignatureValidatorConstants, SignatureDe
         bytes memory,
         address
     ) external view override {
-
-        bytes32 dataFunctionSelector;
-        
-        bytes memory functionSelector = new bytes(10);
-        for (uint256 i; i < 10; ) {
-            functionSelector[i] = data[i];
-            unchecked {++i;}
-        }
-        
-
-        dataFunctionSelector = keccak256(functionSelector);
-        
-        bytes32 badSelector = keccak256("0xe19a9dd9");
-        require(dataFunctionSelector != badSelector, "not allowed to change the guard");
+        // We pass all transactions, only checking the post-condition.
     }
 
     function checkAfterExecution(bytes32, bool) external view override {
-
         GnosisSafe safe = GnosisSafe(payable(msg.sender));
-
-        uint256 pageSize = 2;
-
-        (address[] memory modules, ) = safe.getModulesPaginated(moduleAddress, pageSize);
-        require(modules.length == 1, "Too much modules on the safe");
-
-        require(safe.isModuleEnabled(moduleAddress), "Module not enabled");
-
+        bytes memory guard_slot = safe.getStorageAt(GUARD_STORAGE_SLOT, 1);
+        address guard = address(uint160(uint256(bytes32(guard_slot))));
+        require(guard == address(this), "Attemping to remove the Points Guard");
+        require(safe.isModuleEnabled(moduleAddress), "Attempting to remove the Points Module");
    }
 }
-
