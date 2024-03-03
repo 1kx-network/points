@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.0;
 
-import "@gnosis.pm/safe-contracts/contracts/base/GuardManager.sol";
-import "@gnosis.pm/safe-contracts/contracts/common/Enum.sol";
-import "@gnosis.pm/safe-contracts/contracts/common/SignatureDecoder.sol";
-import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/base/GuardManager.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/common/Enum.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/common/SignatureDecoder.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/GnosisSafe.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
-import "@gnosis.pm/safe-contracts/contracts/interfaces/ISignatureValidator.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/interfaces/ISignatureValidator.sol";
 
 /**
  * @title BaseGuard
