@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import "@gnosis.pm/safe-contracts/contracts/common/Enum.sol";
-import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/common/Enum.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/GnosisSafe.sol";
 
 contract PointsSafeModule {
     address internal constant SENTINEL_OWNERS = address(0x1);

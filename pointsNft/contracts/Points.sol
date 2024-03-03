@@ -6,9 +6,9 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol";
-import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxyFactory.sol";
-import "@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxy.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/GnosisSafe.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/proxies/GnosisSafeProxyFactory.sol";
+import "@gnosis.pm/safe-contracts-v1.3.0/contracts/proxies/GnosisSafeProxy.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./PointsSafeGuard.sol";
@@ -55,7 +55,6 @@ contract Points is ERC721Enumerable, Ownable {
             address(0)      // paymentReceiver
         );
 
-        console.logBytes(initializer);
         GnosisSafeProxy newSafe = safeFactory.createProxyWithNonce(address(safeSingleton), initializer, 0);
         uint256 tokenId = uint256(uint160(address(newSafe)));
         if (recipient == address(0)) {
