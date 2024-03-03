@@ -17,7 +17,7 @@ describe("Points", function () {
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
   async function deployPoints() {
-    const { pointsNftContract } = await ignition.deploy(Points, { chainId: (await hre.getChainId()).toString() });
+    const { pointsNftContract } = await ignition.deploy(Points);
     // Contracts are deployed using the first signer/account by default
     const [owner, otherAccount] = await ethers.getSigners();
 
