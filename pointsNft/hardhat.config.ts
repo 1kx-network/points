@@ -47,7 +47,7 @@ const config: HardhatUserConfig = {
     networks: {
         hardhat: {
             forking: {
-                url: "https://eth-mainnet.g.alchemy.com/v2/-F_H-zzmexb1qflQUIqBYEvwwecXZXas",
+                url: vars.get("FORKING_ENDPOINT"),
             },
             chainId: 1,
         },
