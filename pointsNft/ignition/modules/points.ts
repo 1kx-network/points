@@ -9,6 +9,6 @@ export default buildModule("Points", (m) => {
     const compatibilityFallbackHandler = getCompatibilityFallbackHandlerDeployment(filter).networkAddresses[chainId];
     const pointsSafeModule = m.contract("PointsSafeModule", []);
     const pointsSafeGuard = m.contract("PointsSafeGuard", [pointsSafeModule]);
-    const pointsNftContract = m.contract("Points", [safeAddress, proxyFactoryAddress, pointsSafeModule, pointsSafeGuard]);
+    const pointsNftContract = m.contract("Points", [safeAddress, proxyFactoryAddress, pointsSafeModule, pointsSafeGuard, compatibilityFallbackHandler]);
     return { pointsNftContract, pointsSafeModule, pointsSafeGuard };
 });
