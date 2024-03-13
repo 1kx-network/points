@@ -18,11 +18,11 @@ The initial use case will be a protocol that allows users to accrue points for r
 
 ### Setup
 
-```shell
+```
 cd pointsNft
 ```
 
-```shell
+```
 yarn install
 ```
 ``` set the deployer private key
@@ -30,19 +30,19 @@ npx hardhat vars set DEPLOYER_PRIVATE_KEY <your private key in hex w/o 0x>
 ```
 
 ### Testing 
-```shell
+```
 npx hardhat test 
 ```
 
 ### Deployment 
 compile
 ```
-```shell
+```
 npx hardhat compile
 ```
 deploy
 ```
-```shell
+```
 npx hardhat ignition deploy ignition/modules/points.ts --network sepolia
 ```
 change network to mainnet for prod deployment 
