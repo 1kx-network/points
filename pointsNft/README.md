@@ -17,9 +17,11 @@ This provides users with a way to engage in activities with a wallet (smart acco
 The initial use case will be a protocol that allows users to accrue points for respective NFTs, minted by users through activities on various protocols like EigenLayer.
 
 ### Setup
+
 ```shell
 cd pointsNft
 ```
+
 ```shell
 yarn install
 ```
