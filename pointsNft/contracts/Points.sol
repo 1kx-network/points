@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
+import "hardhat/console.sol";
+import "./PointsSafeGuard.sol";
+import "./PointsSafeModule.sol";
 
 // Import this file to use console.log
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -11,8 +13,6 @@ import "@gnosis.pm/safe-contracts-v1.3.0/contracts/proxies/GnosisSafeProxyFactor
 import "@gnosis.pm/safe-contracts-v1.3.0/contracts/proxies/GnosisSafeProxy.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "./PointsSafeGuard.sol";
-import "./PointsSafeModule.sol";
 
 
 contract Points is ERC721Enumerable, Ownable {
@@ -21,7 +21,6 @@ contract Points is ERC721Enumerable, Ownable {
     PointsSafeModule immutable safeModule;
     PointsSafeGuard immutable safeGuard;
     address immutable safeFallBackHandler;
-
     string baseURI = "https://on-chain-points.netlify.app/metadata/";
 
     constructor(GnosisSafe _safeSingleton,
@@ -45,7 +44,7 @@ contract Points is ERC721Enumerable, Ownable {
             safeGuard
         );
         address[] memory owners = new address[](1);
-        owners[0] = msg.sender;
+        owners[0] = recipient;
         bytes memory initializer = abi.encodeWithSignature(
             "setup(address[],uint256,address,bytes,address,address,uint256,address)", 
             owners,
