@@ -9,7 +9,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@gnosis.pm/safe-contracts-v1.3.0/contracts/GnosisSafe.sol";
 import "@gnosis.pm/safe-contracts-v1.3.0/contracts/proxies/GnosisSafeProxyFactory.sol";
 import "@gnosis.pm/safe-contracts-v1.3.0/contracts/proxies/GnosisSafeProxy.sol";
-import "@gnosis.pm/safe-contracts-v1.3.0/contracts/handler/CompatibilityFallbackHandler.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./PointsSafeGuard.sol";
@@ -21,7 +20,7 @@ contract Points is ERC721Enumerable, Ownable {
     GnosisSafeProxyFactory immutable safeFactory;
     PointsSafeModule immutable safeModule;
     PointsSafeGuard immutable safeGuard;
-    CompatibilityFallbackHandler immutable safeFallBackHandler;
+    address immutable safeFallBackHandler;
 
     string baseURI = "https://on-chain-points.netlify.app/metadata/";
 
@@ -29,12 +28,12 @@ contract Points is ERC721Enumerable, Ownable {
                 GnosisSafeProxyFactory _safeFactory,
                 PointsSafeModule _safeModule,
                 PointsSafeGuard _safeGuard,
-                CompatibilityFallbackHandler _safeFallBackHandler) ERC721("Points", "PT") Ownable(msg.sender) {
+                address _safeFallBackHandler) ERC721("Points", "PT") Ownable(msg.sender) {
         safeFactory = _safeFactory;
         safeSingleton = _safeSingleton;
         safeModule = _safeModule;
         safeGuard = _safeGuard;
-        safeFallBackHandler = __safeFallBackHandler;
+        safeFallBackHandler = _safeFallBackHandler;
     }
 
     function mintNFT(address recipient)
