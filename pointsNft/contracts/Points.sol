@@ -27,8 +27,7 @@ contract Points is ERC721Enumerable, Ownable {
                 GnosisSafeProxyFactory _safeFactory,
                 PointsSafeModule _safeModule,
                 PointsSafeGuard _safeGuard,
-                address _safeFallBackHandler
-            ) ERC721("Points", "PT") Ownable(msg.sender) {
+                address _safeFallBackHandler) ERC721("Points", "PT") Ownable(msg.sender) {
         safeFactory = _safeFactory;
         safeSingleton = _safeSingleton;
         safeModule = _safeModule;
