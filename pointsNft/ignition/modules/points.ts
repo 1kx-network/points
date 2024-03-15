@@ -7,8 +7,6 @@ export default buildModule("Points", (m) => {
     const safeAddress = getSafeSingletonDeployment(filter).networkAddresses[chainId];
     const proxyFactoryAddress = getProxyFactoryDeployment(filter).networkAddresses[chainId];
     const compatibilityFallbackHandler = getCompatibilityFallbackHandlerDeployment(filter).networkAddresses[chainId];
-    const pointsSafeModule = m.contract("PointsSafeModule", []);
-    const pointsSafeGuard = m.contract("PointsSafeGuard", [pointsSafeModule]);
-    const pointsNftContract = m.contract("Points", [safeAddress, proxyFactoryAddress, pointsSafeModule, pointsSafeGuard, compatibilityFallbackHandler]);
-    return { pointsNftContract, pointsSafeModule, pointsSafeGuard };
+    const pointsNftContract = m.contract("Points", [safeAddress, proxyFactoryAddress, compatibilityFallbackHandler]);
+    return { pointsNftContract };
 });

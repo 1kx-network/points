@@ -84,11 +84,6 @@ describe("Points", function () {
 
 
       it("mint nft twice, checking for CREATE2 behavior", async function () {
-        const {
-          pointsNftContract,
-          owner
-        } = await loadFixture(deployPoints);
-
         await expect(
           pointsNftContract.mintNFT(owner.address)
         ).not.to.be.reverted
