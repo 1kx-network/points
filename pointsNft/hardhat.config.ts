@@ -5,6 +5,7 @@ import "@nomicfoundation/hardhat-ignition-ethers";
 import { BigNumber } from "@ethersproject/bignumber";
 import { DeterministicDeploymentInfo } from "hardhat-deploy/dist/types";
 import { getSingletonFactoryInfo } from "@gnosis.pm/safe-singleton-factory";
+import "hardhat-tracer"
 
 const getAccounts = function(): string[] {
     let accounts = [];

@@ -8,7 +8,6 @@ import "@gnosis.pm/safe-contracts-v1.3.0/contracts/common/SignatureDecoder.sol";
 import "@gnosis.pm/safe-contracts-v1.3.0/contracts/GnosisSafe.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@gnosis.pm/safe-contracts-v1.3.0/contracts/interfaces/ISignatureValidator.sol";
-
 /**
  * @title BaseGuard
  * @notice The BaseGuard implements support for ERC165, since gnosis safe v1.3.0 doesn't implement it.
