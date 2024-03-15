@@ -82,6 +82,21 @@ describe("Points", function () {
         ).to.equal(owner.address)
       });
 
+
+      it("mint nft twice, checking for CREATE2 behavior", async function () {
+        const {
+          pointsNftContract,
+          owner
+        } = await loadFixture(deployPoints);
+
+        await expect(
+          pointsNftContract.mintNFT(owner.address)
+        ).not.to.be.reverted
+        await expect(
+          pointsNftContract.mintNFT(owner.address)
+        ).not.to.be.reverted
+      });
+
       it("mint nft to address with an account that's not owner", async function () {
         let mintNftTxn = await pointsNftContract.mintNFT(otherAccount.address);
         let mintNft = await mintNftTxn.wait()
